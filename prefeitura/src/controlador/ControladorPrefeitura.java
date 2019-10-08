@@ -31,10 +31,15 @@ public class ControladorPrefeitura {
         boolean resultado = DaoPrefeitura.inserir(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Inserido com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
 }
+ 
 
     public static void alterar(ManutencaoPrefeitura man){
         Prefeitura objeto = new Prefeitura();
@@ -47,11 +52,15 @@ public class ControladorPrefeitura {
         boolean resultado = DaoPrefeitura.alterar(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Alterado com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
     }
-
+    
      public static void excluir(ManutencaoPrefeitura man){
         Prefeitura objeto = new Prefeitura();
         objeto.setCodigo(Integer.parseInt(man.jtfCodigo.getText())); //só precisa definir a chave primeira
@@ -59,10 +68,15 @@ public class ControladorPrefeitura {
         boolean resultado = DaoPrefeitura.excluir(objeto);
         if (resultado) {
             JOptionPane.showMessageDialog(null, "Excluído com sucesso!");
+            if (man.listagem != null) {
+     atualizarTabela(man.listagem.tabela); //atualizar a tabela da listagem
+}
+man.dispose();//fechar a tela da manutenção
         } else {
             JOptionPane.showMessageDialog(null, "Erro!");
         }
     }
+     
      public static void atualizarTabela(JTable tabela) {
         DefaultTableModel modelo = new DefaultTableModel();
         //definindo o cabeçalho da tabela
@@ -82,5 +96,16 @@ public class ControladorPrefeitura {
             modelo.addRow(linha); //adicionando a linha na tabela
         }
         tabela.setModel(modelo);
+    }
+     public static void atualizaCampos(ManutencaoPrefeitura man, int pk){ 
+        Prefeitura objeto = DaoPrefeitura.consultar(pk);
+        //Definindo os valores do campo na tela (um para cada atributo/campo)
+        man.jtfCodigo.setText(objeto.getCodigo().toString());
+        man.jtfNome.setText(objeto.getNome());
+        man.jtfEndereco.setText(objeto.getEndereco());
+        man.jtfNr_funcionario.setText(objeto.getNr_funcionario().toString());
+        
+        man.jtfCodigo.setEnabled(false); //desabilitando o campo código
+        man.btnAdicionar.setEnabled(false); //desabilitando o botão adicionar
     }
 }
